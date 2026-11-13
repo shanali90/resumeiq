@@ -1,15 +1,12 @@
 # ResumeIQ — AI-Powered Resume Analyzer & Job Matching System
 
-[![Render](https://img.shields.io/badge/Render-Docker%20Web%20Service-46E3B7?logo=render&logoColor=white)](https://render.com)
-[![Streamlit](https://img.shields.io/badge/Streamlit-Community%20Cloud-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io)
-[![Python](https://img.shields.io/badge/Python-3.12%20%7C%203.11-3776AB?logo=python&logoColor=white)](https://python.org)
-[![Security Audited](https://img.shields.io/badge/Security-Hardened%20%26%20Audited-10B981)](#security--privacy)
+[![Live App](https://img.shields.io/badge/Live%20App-resumeiq.streamlit.app-FF4B4B?style=for-the-badge&logo=streamlit)](https://resumeiq-43uio4qwnnkl.streamlit.app)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/shanali90/resumeiq)
+
+**Live Production Instance**: [https://resumeiq-43uio4qwnnkl.streamlit.app](https://resumeiq-43uio4qwnnkl.streamlit.app)  
+*Note*: Streamlit Community Cloud instances sleep after inactivity. Click "Yes, get this app back up!" to wake in ~30–60 seconds.
 
 ResumeIQ is an explainable, intelligent resume evaluation and candidate-job matching platform built with FastAPI, Streamlit, and Google Gemini.
-
-Designed for high reliability under strict memory constraints (< 512 MB RAM footprint) and dual-platform deployment:
-1. **Primary Target**: [Render.com](https://render.com) Free Docker Web Service.
-2. **Backup Target**: [Streamlit Community Cloud](https://share.streamlit.io).
 
 ---
 

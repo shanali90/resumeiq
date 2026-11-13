@@ -1,0 +1,35 @@
+Senior Machine Learning Engineer
+
+Company: TechCorp AI
+Location: San Francisco, CA (Hybrid)
+Experience: 5+ years
+
+About the Role:
+We are looking for a Senior Machine Learning Engineer to join our AI team and drive the development of cutting-edge ML solutions.
+
+Required Skills:
+- Python (must have)
+- PyTorch or TensorFlow (required)
+- Experience with NLP and/or Computer Vision
+- Strong understanding of deep learning architectures
+- Experience deploying ML models to production
+- Docker and Kubernetes
+- SQL and data pipeline experience
+- Git version control
+
+Preferred Skills:
+- Experience with LLMs and prompt engineering
+- Knowledge of MLOps tools (MLflow, Weights & Biases)
+- Cloud platform experience (AWS, GCP, or Azure)
+- Published research or patents (nice to have)
+- Experience with distributed training
+
+Education:
+MS or PhD in Computer Science, Mathematics, or related field preferred
+
+Responsibilities:
+- Design and implement ML models for production systems
+- Collaborate with cross-functional teams to define ML solutions
+- Optimize model performance and reduce inference latency
+- Mentor junior engineers
+- Contribute to ML infrastructure and tooling

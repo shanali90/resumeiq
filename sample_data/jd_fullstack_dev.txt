@@ -1,0 +1,34 @@
+Full Stack Developer
+
+Company: WebCo
+Location: Remote
+Experience: 3+ years
+
+About the Role:
+Join our engineering team to build modern web applications used by thousands of users daily.
+
+Required Skills:
+- JavaScript/TypeScript (must have)
+- React or Vue.js (required)
+- Node.js (required)
+- PostgreSQL or MySQL
+- REST API design
+- Git
+
+Preferred Skills:
+- Next.js or Nuxt.js (nice to have)
+- GraphQL (plus)
+- Docker
+- Cloud deployment (AWS, Vercel, or similar)
+- CI/CD pipelines
+- Testing frameworks (Jest, Cypress)
+
+Education:
+Bachelor's degree in Computer Science or equivalent experience
+
+Responsibilities:
+- Develop responsive, accessible web applications
+- Design and implement RESTful APIs
+- Write unit and integration tests
+- Participate in code reviews
+- Collaborate with designers and product managers

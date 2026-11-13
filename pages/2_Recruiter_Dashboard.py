@@ -12,6 +12,8 @@ try:
         inject_responsive_css,
         render_sidebar_privacy_controls,
         safe_text,
+        SAMPLE_DATA_DIR,
+        load_sample_jd,
     )
 except ImportError:
     from ui.ui_helpers import (
@@ -20,10 +22,11 @@ except ImportError:
         inject_responsive_css,
         render_sidebar_privacy_controls,
         safe_text,
+        SAMPLE_DATA_DIR,
+        load_sample_jd,
     )
 
 API_URL = os.getenv("RESUMEIQ_API_URL", "http://127.0.0.1:8000")
-SAMPLE_DATA_DIR = Path(__file__).resolve().parent.parent.parent / "tests" / "sample_data"
 
 st.set_page_config(page_title="Recruiter Dashboard — ResumeIQ", page_icon="🏢", layout="wide")
 
@@ -59,11 +62,7 @@ col_jd_text, col_jd_sample = st.columns([3, 1])
 with col_jd_sample:
     st.markdown("**Sample Job:**")
     jd_choice = st.selectbox("Select JD:", ["None", "Senior ML Engineer", "Full Stack Developer"])
-    sample_jd_content = ""
-    if jd_choice == "Senior ML Engineer":
-        sample_jd_content = (SAMPLE_DATA_DIR / "jd_ml_engineer.txt").read_text(encoding="utf-8")
-    elif jd_choice == "Full Stack Developer":
-        sample_jd_content = (SAMPLE_DATA_DIR / "jd_fullstack_dev.txt").read_text(encoding="utf-8")
+    sample_jd_content = load_sample_jd(jd_choice)
 
 with col_jd_text:
     jd_text_input = st.text_area("Job Description", value=sample_jd_content, height=140, placeholder="Paste job description requirements...")
@@ -102,11 +101,15 @@ if uploaded_files:
 
 if use_sample_pool:
     samples = ["strong_ml_engineer.pdf", "web_developer.pdf", "fresher.docx", "weak_resume.pdf", "career_changer.docx"]
+    loaded_count = 0
     for s_name in samples:
         s_path = SAMPLE_DATA_DIR / s_name
         if s_path.exists():
             ctype = "application/pdf" if s_name.endswith(".pdf") else "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             all_files_to_send.append((s_name, s_path.read_bytes(), ctype))
+            loaded_count += 1
+    if loaded_count == 0:
+        st.warning("Sample resume files not found on disk. Please upload candidate resumes above.")
 
 st.write(f"Total resumes queued for ranking: **{len(all_files_to_send)}**")
 

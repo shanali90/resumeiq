@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import html
 import os
+from pathlib import Path
 import subprocess
 import sys
 import time
@@ -266,3 +267,111 @@ def render_sidebar_privacy_controls() -> None:
                     st.warning("Could not reach backend to purge data.")
             except Exception as exc:
                 st.error(f"Error purging data: {exc}")
+
+
+def get_sample_data_dir() -> Path:
+    """Find sample data directory across various deployment layouts."""
+    candidates = [
+        Path(__file__).resolve().parent / "sample_data",
+        Path(__file__).resolve().parent / "app" / "data" / "sample_data",
+        Path(__file__).resolve().parent.parent / "tests" / "sample_data",
+        Path(__file__).resolve().parent / "tests" / "sample_data",
+    ]
+    for p in candidates:
+        if p.exists() and p.is_dir():
+            return p
+    return candidates[0]
+
+
+SAMPLE_DATA_DIR = get_sample_data_dir()
+
+EMBEDDED_SAMPLE_JDS: dict[str, str] = {
+    "Senior ML Engineer": """Senior Machine Learning Engineer
+
+Company: TechCorp AI
+Location: San Francisco, CA (Hybrid)
+Experience: 5+ years
+
+About the Role:
+We are looking for a Senior Machine Learning Engineer to join our AI team and drive the development of cutting-edge ML solutions.
+
+Required Skills:
+- Python (must have)
+- PyTorch or TensorFlow (required)
+- Experience with NLP and/or Computer Vision
+- Strong understanding of deep learning architectures
+- Experience deploying ML models to production
+- Docker and Kubernetes
+- SQL and data pipeline experience
+- Git version control
+
+Preferred Skills:
+- Experience with LLMs and prompt engineering
+- Knowledge of MLOps tools (MLflow, Weights & Biases)
+- Cloud platform experience (AWS, GCP, or Azure)
+- Published research or patents (nice to have)
+- Experience with distributed training
+
+Education:
+MS or PhD in Computer Science, Mathematics, or related field preferred
+
+Responsibilities:
+- Design and implement ML models for production systems
+- Collaborate with cross-functional teams to define ML solutions
+- Optimize model performance and reduce inference latency
+- Mentor junior engineers
+- Contribute to ML infrastructure and tooling
+""",
+    "Full Stack Developer": """Full Stack Developer
+
+Company: WebCo
+Location: Remote
+Experience: 3+ years
+
+About the Role:
+Join our engineering team to build modern web applications used by thousands of users daily.
+
+Required Skills:
+- JavaScript/TypeScript (must have)
+- React or Vue.js (required)
+- Node.js (required)
+- PostgreSQL or MySQL
+- REST API design
+- Git
+
+Preferred Skills:
+- Next.js or Nuxt.js (nice to have)
+- GraphQL (plus)
+- Docker
+- Cloud deployment (AWS, Vercel, or similar)
+- CI/CD pipelines
+- Testing frameworks (Jest, Cypress)
+
+Education:
+Bachelor's degree in Computer Science or equivalent experience
+
+Responsibilities:
+- Develop responsive, accessible web applications
+- Design and implement RESTful APIs
+- Write unit and integration tests
+- Participate in code reviews
+- Collaborate with designers and product managers
+""",
+}
+
+
+def load_sample_jd(choice: str) -> str:
+    """Safely return sample job description text by name with disk lookup and embedded fallback."""
+    if not choice or choice == "None":
+        return ""
+    if choice in EMBEDDED_SAMPLE_JDS:
+        target_fn = "jd_ml_engineer.txt" if choice == "Senior ML Engineer" else "jd_fullstack_dev.txt"
+        file_path = SAMPLE_DATA_DIR / target_fn
+        if file_path.exists():
+            try:
+                return file_path.read_text(encoding="utf-8")
+            except Exception:
+                pass
+        return EMBEDDED_SAMPLE_JDS[choice]
+    return ""
+

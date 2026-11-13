@@ -12,6 +12,8 @@ try:
         inject_responsive_css,
         render_sidebar_privacy_controls,
         safe_text,
+        SAMPLE_DATA_DIR,
+        load_sample_jd,
     )
 except ImportError:
     from ui.ui_helpers import (
@@ -20,10 +22,11 @@ except ImportError:
         inject_responsive_css,
         render_sidebar_privacy_controls,
         safe_text,
+        SAMPLE_DATA_DIR,
+        load_sample_jd,
     )
 
 API_URL = os.getenv("RESUMEIQ_API_URL", "http://127.0.0.1:8000")
-SAMPLE_DATA_DIR = Path(__file__).resolve().parent.parent.parent / "tests" / "sample_data"
 
 st.set_page_config(page_title="Candidate Analyzer — ResumeIQ", page_icon="👤", layout="wide")
 
@@ -109,6 +112,8 @@ with col_sample:
             file_bytes = sample_path.read_bytes()
             file_name = chosen_file
             st.success(f"Loaded sample: {chosen_file} ({len(file_bytes):,} bytes)")
+        else:
+            st.warning(f"Sample resume '{chosen_file}' not found on disk. Please upload a PDF or DOCX resume.")
 
 if st.button("🔍 Analyze Resume", type="primary", disabled=file_bytes is None):
     with st.spinner("Parsing resume, extracting structured profile, and computing quality score..."):
@@ -240,11 +245,7 @@ if "resume_analysis" in st.session_state:
     jd_sample_col, jd_text_col = st.columns([1, 2])
     with jd_sample_col:
         jd_sample = st.radio("Load Sample Job Description:", ["None", "Senior ML Engineer", "Full Stack Developer"])
-        sample_jd_text = ""
-        if jd_sample == "Senior ML Engineer":
-            sample_jd_text = (SAMPLE_DATA_DIR / "jd_ml_engineer.txt").read_text(encoding="utf-8")
-        elif jd_sample == "Full Stack Developer":
-            sample_jd_text = (SAMPLE_DATA_DIR / "jd_fullstack_dev.txt").read_text(encoding="utf-8")
+        sample_jd_text = load_sample_jd(jd_sample)
 
     with jd_text_col:
         jd_input = st.text_area("Job Description Text", value=sample_jd_text, height=180, placeholder="Paste a job description here...")

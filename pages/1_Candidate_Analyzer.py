@@ -218,7 +218,9 @@ if "resume_analysis" in st.session_state:
         if exps:
             st.markdown("#### Work Experience")
             for exp in exps:
-                st.markdown(f"**{exp.get('title') or 'Role'}** {f'at {exp.get(\"company\")}' if exp.get('company') else ''} ({exp.get('start', '')} - {exp.get('end', '')})")
+                comp_str = f" at {exp['company']}" if exp.get("company") else ""
+                date_str = f" ({exp.get('start', '')} - {exp.get('end', '')})"
+                st.markdown(f"**{exp.get('title') or 'Role'}**{comp_str}{date_str}")
                 for b in exp.get("bullets", []):
                     st.write(f"• {b}")
                 st.write("")
@@ -226,7 +228,9 @@ if "resume_analysis" in st.session_state:
         if edus:
             st.markdown("#### Education")
             for edu in edus:
-                st.write(f"🎓 **{edu.get('degree') or 'Degree'}** {f'— {edu.get(\"institution\")}' if edu.get(\"institution\") else ''} ({edu.get('start', '')} - {edu.get('end', '')})")
+                inst_str = f" — {edu['institution']}" if edu.get("institution") else ""
+                date_str = f" ({edu.get('start', '')} - {edu.get('end', '')})"
+                st.write(f"🎓 **{edu.get('degree') or 'Degree'}**{inst_str}{date_str}")
 
     # Match Against a Job Description Section
     st.markdown("---")

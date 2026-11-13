@@ -216,3 +216,33 @@ if "ranking_data" in st.session_state:
                     row_dict[cell["skill"]] = "✅ Yes" if cell["has_skill"] else "❌ No"
                 matrix_display.append(row_dict)
             st.dataframe(matrix_display, use_container_width=True)
+
+    # 4. CSV Export
+    import csv
+    import io
+
+    csv_buffer = io.StringIO()
+    writer = csv.writer(csv_buffer)
+    writer.writerow(["Rank", "Candidate Name", "Overall Score (%)", "Verdict", "Resume Quality", "Key Assessment", "Matched Skills", "Missing Required Skills"])
+    for cand in candidates:
+        mr = cand.get("match_result", {})
+        writer.writerow([
+            cand.get("rank"),
+            cand.get("candidate_name") or cand.get("filename"),
+            cand.get("overall_score"),
+            cand.get("verdict"),
+            cand.get("quality_score", "N/A"),
+            cand.get("one_line_reason", ""),
+            "; ".join(mr.get("matched_skills", [])),
+            "; ".join(mr.get("missing_required_skills", [])),
+        ])
+
+    st.markdown("---")
+    st.download_button(
+        label="📥 Export Results (CSV)",
+        data=csv_buffer.getvalue(),
+        file_name=f"resumeiq_ranking_{str(r_data.get('job_title', 'candidates')).lower().replace(' ', '_')}.csv",
+        mime="text/csv",
+        type="primary",
+        use_container_width=True,
+    )

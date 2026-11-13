@@ -87,9 +87,13 @@ file_name = None
 with col_upload:
     uploaded = st.file_uploader("Upload Resume (PDF or DOCX, max 5 MB)", type=["pdf", "docx"])
     if uploaded:
-        uploaded_file = uploaded
-        file_bytes = uploaded.getvalue()
-        file_name = uploaded.name
+        raw_val = uploaded.getvalue()
+        if len(raw_val) > 5 * 1024 * 1024:
+            st.error(f"File '{uploaded.name}' exceeds the maximum allowed size of 5 MB ({len(raw_val) / (1024*1024):.1f} MB). Please upload a smaller file.")
+        else:
+            uploaded_file = uploaded
+            file_bytes = raw_val
+            file_name = uploaded.name
 
 with col_sample:
     st.markdown("**Or load a sample resume:**")

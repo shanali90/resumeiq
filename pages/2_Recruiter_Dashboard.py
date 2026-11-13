@@ -97,7 +97,11 @@ all_files_to_send: list[tuple[str, bytes, str]] = []
 
 if uploaded_files:
     for f in uploaded_files:
-        all_files_to_send.append((f.name, f.getvalue(), f.type))
+        f_val = f.getvalue()
+        if len(f_val) > 5 * 1024 * 1024:
+            st.error(f"File '{f.name}' exceeds the 5 MB limit ({len(f_val) / (1024*1024):.1f} MB) and was skipped.")
+        else:
+            all_files_to_send.append((f.name, f_val, f.type))
 
 if use_sample_pool:
     samples = ["strong_ml_engineer.pdf", "web_developer.pdf", "fresher.docx", "weak_resume.pdf", "career_changer.docx"]
@@ -140,9 +144,23 @@ if st.button("🚀 Run Batch Ranking", type="primary", disabled=len(all_files_to
 # Display Ranking Results
 if "ranking_data" in st.session_state:
     r_data = st.session_state["ranking_data"]
-    candidates = r_data.get("candidates", [])
-    matrix = r_data.get("comparison_matrix", [])
-    top_candidates = r_data.get("top_candidates", [])
+    all_candidates = r_data.get("candidates", [])
+    candidates = [
+        candidate for candidate in all_candidates
+        if float(candidate.get("overall_score") or 0) >= min_score_filter
+    ]
+    visible_names = {
+        candidate.get("candidate_name") or candidate.get("filename")
+        for candidate in candidates
+    }
+    matrix = [
+        row for row in r_data.get("comparison_matrix", [])
+        if row and row[0].get("candidate") in visible_names
+    ]
+    top_candidates = [
+        candidate for candidate in r_data.get("top_candidates", [])
+        if float(candidate.get("overall_score") or 0) >= min_score_filter
+    ]
 
     st.markdown("---")
     st.subheader(f"🏆 Candidate Leaderboard: {r_data.get('job_title', 'Target Role')}")

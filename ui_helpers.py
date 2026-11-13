@@ -164,7 +164,10 @@ def enforce_auth() -> None:
         submitted = st.form_submit_button("Unlock ResumeIQ", use_container_width=True, type="primary")
 
         if submitted:
-            client_ip = "session_user"
+            if "_auth_client_id" not in st.session_state:
+                import uuid
+                st.session_state["_auth_client_id"] = str(uuid.uuid4())
+            client_ip = f"session_{st.session_state['_auth_client_id']}"
             is_valid, msg = check_password_auth(pwd_input, correct_password, client_ip=client_ip)
             if is_valid:
                 st.session_state["authenticated"] = True
